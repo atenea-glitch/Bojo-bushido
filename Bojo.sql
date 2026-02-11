@@ -42,3 +42,56 @@ CREATE TABLE detalles (
     FOREIGN KEY(id_pedido) REFERENCES pedidos(id_pedido),
     FOREIGN KEY(id_producto) REFERENCES productos(id_producto)
 );
+
+INSERT INTO clientes (correo, pais, nom, apellido, telefono, codigo_postal, provincia, pueblo, calle, numero)
+VALUES 
+('hulk.aplasta@avengers.jp', 'EEUU', 'Hulk', 'Banner', '+1 202-555-0101', '10001', 'New York', 'Manhattan', 'Av. Vengadores', '7-A'),
+('gizmo.mogwai@rules.jp', 'Japón', 'Gizmo', 'Magwai', '+81 90-1111-2222', '150-0042', 'Tokyo', 'Shibuya', 'Dogenzaka', '302'),
+('asuka.eva02@nerv.jp', 'Japón', 'Asuka', 'Langley', '+81 80-5555-4444', '250-0601', 'Kanagawa', 'Hakone', 'Sengokuhara', '02');
+
+INSERT INTO productos (nombre, descripcion, existencias, precio)
+VALUES 
+('Kimono de Gala para Gatos', 'Para que tu michi sea el más elegante del barrio.', 5, 45.00),
+('Gorra "No molestar, programando"', 'Ideal para bibliotecas y salas de estudio.', 20, 15.95),
+('Zapatillas Ninja Silenciosas', 'Para llegar tarde a clase sin que el profesor te oiga.', 12, 55.50),
+('Palillos Eléctricos Anti-Deslave', 'Grip de alta tecnología para Ramen resbaladizo.', 30, 12.00),
+('Sudadera "Sobreviví al examen"', 'Edición limitada para valientes.', 40, 29.99),
+('Taza Térmica "Error 404: Café not found"', 'Mantiene el té caliente por 8 horas.', 25, 18.50),
+('Abanico Manual Anti-Calor Extremo', 'Estilo samurái para el verano de Tokyo.', 50, 8.00),
+('Calcetines de Sushi (Salmón)', 'Cuidado, no se comen.', 100, 6.50),
+('Libreta de Apuntes Invisibles', 'Ideal para espías o estudiantes que no estudian.', 15, 9.90),
+('Bolígrafo con forma de Katana', 'Escribe con el honor de un guerrero.', 60, 4.50),
+('Mochila Cohete Espacial', 'Para ir a clase a la velocidad de la luz.', 10, 85.00),
+('Paraguas con Luz Neón', 'Para no perderte en el cruce de Shibuya.', 20, 35.00),
+('Almohada con forma de Onigiri', 'Suave, blandita y no mancha de arroz.', 18, 22.00),
+('Llavero Totoro Gigante', 'Ocupa más que tus llaves, pero es adorable.', 45, 7.25),
+('Gafas de Sol para Perros', 'Porque ellos también tienen estilo.', 8, 14.00),
+('Póster "Keep Calm and Learn SQL"', 'Decoración motivacional para tu cuarto.', 35, 12.99),
+('Mini Ventilador USB para Nariz', 'Refresco directo para momentos de estrés.', 15, 10.50),
+('Cuaderno de Caligrafía Pro', 'Papel de seda que absorbe la tinta mágicamente.', 25, 19.00),
+('Reloj de Arena de 5 minutos', 'Para controlar tus descansos (o tus siestas).', 30, 11.00),
+('Set de Pegatinas de Gatitos Programadores', 'Decora tu portátil con estilo.', 200, 3.50);
+
+-- PEDIDO 1: Gizmo compra utiles para no mojarse 
+
+INSERT INTO pedidos (id_cliente, fecha) VALUES (2, GETDATE());
+INSERT INTO detalles (id_pedido, id_producto, cantidad) 
+VALUES (1, 12, 1), (1, 8, 3), (1, 13, 1); -- Paraguas Neón, Calcetines Sushi y Almohada Onigiri
+
+-- PEDIDO 2: Asuka compra equipo de estudio y un regalo para su gato
+
+INSERT INTO pedidos (id_cliente, fecha) VALUES (3, GETDATE());
+INSERT INTO detalles (id_pedido, id_producto, cantidad) 
+VALUES (2, 1, 1), (2, 10, 2), (2, 18, 1); -- Kimono Gato, Bolis Katana y Cuaderno Caligrafía
+
+-- CONSULTA FINAL: Une las tablas para mostrar nombres, productos y cálculos
+SELECT 
+    p.id_pedido, 
+    c.nom AS Nombre_Cliente, 
+    prod.nombre AS Producto, 
+    d.cantidad, 
+    (d.cantidad * prod.precio) AS Subtotal
+FROM pedidos p
+JOIN clientes c ON p.id_cliente = c.id_cliente
+JOIN detalles d ON p.id_pedido = d.id_pedido
+JOIN productos prod ON d.id_producto = prod.id_producto;
