@@ -1,39 +1,116 @@
+-- BORRAR TABLAS SI EXISTEN (orden correcto por claves foráneas)
 DROP TABLE IF EXISTS detalles;
 DROP TABLE IF EXISTS pedidos;
 DROP TABLE IF EXISTS productos;
 DROP TABLE IF EXISTS clientes;
 
+-- =========================
+-- TABLA CLIENTES
+-- =========================
 CREATE TABLE clientes (
-    id_cliente        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    correo            VARCHAR(100) NOT NULL UNIQUE,
-    pais              VARCHAR(50) NOT NULL,
-    nom               VARCHAR(50) NOT NULL,
-    primer_apellido   VARCHAR(35) NOT NULL,
-    segundo_apellido  VARCHAR(35),
-    telefono          VARCHAR(30),
-    codigo_postal     VARCHAR(10) NOT NULL,
-    provincia         VARCHAR(30) NOT NULL,
-    pueblo            VARCHAR(35) NOT NULL,
-    calle             VARCHAR(50) NOT NULL,
-    numero            VARCHAR(4) NOT NULL,
-    puerta            VARCHAR(9) NOT NULL
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    pais VARCHAR(50) NOT NULL,
+    nom VARCHAR(50) NOT NULL,
+    primer_apellido VARCHAR(35) NOT NULL,
+    segundo_apellido VARCHAR(35),
+    telefono VARCHAR(30),
+    codigo_postal VARCHAR(10) NOT NULL,
+    provincia VARCHAR(30) NOT NULL,
+    pueblo VARCHAR(35) NOT NULL,
+    calle VARCHAR(50) NOT NULL,
+    numero VARCHAR(10) NOT NULL,
+    puerta VARCHAR(10) NOT NULL
 );
 
+-- =========================
+-- TABLA PRODUCTOS
+-- =========================
 CREATE TABLE productos (
-    id_producto  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    nombre       VARCHAR(55) NOT NULL,
-    descripcion  VARCHAR(2000) NOT NULL,
-    existentes   INT NOT NULL DEFAULT 0 CHECK (existentes >= 0),
-    precio       DECIMAL(5,2) NOT NULL CHECK (precio > 0 AND precio < 1000)
+    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(55) NOT NULL,
+    descripcion VARCHAR(2000) NOT NULL,
+    existentes INT NOT NULL DEFAULT 0,
+    precio DECIMAL(6,2) NOT NULL CHECK (precio > 0)
 );
 
+-- =========================
+-- TABLA PEDIDOS
+-- =========================
 CREATE TABLE pedidos (
-    id_pedido   INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    id_cliente  INT NOT NULL,
-    fecha       DATE NOT NULL DEFAULT (CURRENT_DATE),
-    FOREIGN KEY(id_cliente) REFERENCES clientes(id_cliente)
+    id_pedido INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT NOT NULL,
+    fecha DATE NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (id_cliente) 
+        REFERENCES clientes(id_cliente)
+        ON DELETE CASCADE
 );
 
+-- =========================
+-- TABLA DETALLES
+-- =========================
+CREATE TABLE detalles (
+    id_detalle INT AUTO_INCREMENT PRIMARY KEY,
+    id_pedido INT NOT NULL,
+    id_producto INT NOT NULL,
+    cantidad INT NOT NULL CHECK (cantidad > 0),
+    FOREIGN KEY (id_pedido) 
+        REFERENCES pedidos(id_pedido)
+        ON DELETE CASCADE,
+    FOREIGN KEY (id_producto) 
+        REFERENCES productos(id_producto)
+);
+
+-- =========================
+-- INSERT CLIENTES
+-- =========================
+INSERT INTO clientes 
+(correo, pais, nom, primer_apellido, segundo_apellido, telefono, codigo_postal, provincia, pueblo, calle, numero, puerta)
+VALUES 
+('hulk.aplasta@avengers.jp', 'EEUU', 'Hulk', 'Banner', NULL, '+1 202-555-0101', '10001', 'New York', 'Manhattan', 'Av. Vengadores', '7-A', '1'),
+('gizmo.mogwai@rules.jp', 'Japón', 'Gizmo', 'Magwai', NULL, '+81 90-1111-2222', '150-0042', 'Tokyo', 'Shibuya', 'Dogenzaka', '302', '2'),
+('asuka.eva02@nerv.jp', 'Japón', 'Asuka', 'Langley', NULL, '+81 80-5555-4444', '250-0601', 'Kanagawa', 'Hakone', 'Sengokuhara', '02', '3');
+
+-- =========================
+-- INSERT PRODUCTOS
+-- =========================
+INSERT INTO productos (nombre, descripcion, existentes, precio)
+VALUES 
+('Kimono de Gala para Gatos', 'Para que tu michi sea el más elegante del barrio.', 5, 45.00),
+('Gorra "No molestar, programando"', 'Ideal para bibliotecas y salas de estudio.', 20, 15.95),
+('Zapatillas Ninja Silenciosas', 'Para llegar tarde a clase sin que el profesor te oiga.', 12, 55.50),
+('Palillos Eléctricos Anti-Deslave', 'Grip de alta tecnología para Ramen resbaladizo.', 30, 12.00),
+('Sudadera "Sobreviví al examen"', 'Edición limitada para valientes.', 40, 29.99),
+('Taza Térmica "Error 404: Café not found"', 'Mantiene el té caliente por 8 horas.', 25, 18.50),
+('Abanico Manual Anti-Calor Extremo', 'Estilo samurái para el verano de Tokyo.', 50, 8.00),
+('Calcetines de Sushi (Salmón)', 'Cuidado, no se comen.', 100, 6.50),
+('Libreta de Apuntes Invisibles', 'Ideal para espías o estudiantes que no estudian.', 15, 9.90),
+('Bolígrafo con forma de Katana', 'Escribe con el honor de un guerrero.', 60, 4.50);
+
+-- =========================
+-- PEDIDOS
+-- =========================
+INSERT INTO pedidos (id_cliente) VALUES (2);
+INSERT INTO detalles (id_pedido, id_producto, cantidad) 
+VALUES (1, 8, 3);
+
+INSERT INTO pedidos (id_cliente) VALUES (3);
+INSERT INTO detalles (id_pedido, id_producto, cantidad) 
+VALUES (2, 1, 1);
+
+-- =========================
+-- CONSULTA FINAL
+-- =========================
+SELECT 
+    p.id_pedido,
+    c.nom AS Nombre_Cliente,
+    prod.nombre AS Producto,
+    d.cantidad,
+    (d.cantidad * prod.precio) AS Subtotal
+FROM pedidos p
+JOIN clientes c ON p.id_cliente = c.id_cliente
+JOIN detalles d ON p.id_pedido = d.id_pedido
+JOIN productos prod ON d.id_producto = prod.id_producto;
 CREATE TABLE detalles (
     id_detalle   INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     id_pedido    INT NOT NULL,
