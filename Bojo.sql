@@ -97,13 +97,13 @@ VALUES
 
 -- PEDIDO 1: Gizmo compra utiles para no mojarse 
 
-INSERT INTO pedidos (id_cliente, fecha) VALUES (2, CURRENT_DATE);
+INSERT INTO pedidos (id_cliente, fecha) VALUES (2, NOW());
 INSERT INTO detalles (id_pedido, id_producto, cantidad) 
 VALUES (1, 12, 1), (1, 8, 3), (1, 13, 1); -- Paraguas Neón, Calcetines Sushi y Almohada Onigiri
 
 -- PEDIDO 2: Asuka compra equipo de estudio y un regalo para su gato
 
-INSERT INTO pedidos (id_cliente, fecha) VALUES (3, CURRENT_DATE);
+INSERT INTO pedidos (id_cliente, fecha) VALUES (3, NOW());
 INSERT INTO detalles (id_pedido, id_producto, cantidad) 
 VALUES (2, 1, 1), (2, 10, 2), (2, 18, 1); -- Kimono Gato, Bolis Katana y Cuaderno Caligrafía
 
