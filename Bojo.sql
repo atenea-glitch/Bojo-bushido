@@ -71,7 +71,7 @@ VALUES
 ('gizmo.mogwai@rules.jp', 'Japón', 'Gizmo', 'Magwai', NULL, '+81 90-1111-2222', '150-0042', 'Tokyo', 'Shibuya', 'Dogenzaka', '302', '2'),
 ('asuka.eva02@nerv.jp', 'Japón', 'Asuka', 'Langley', NULL, '+81 80-5555-4444', '250-0601', 'Kanagawa', 'Hakone', 'Sengokuhara', '02', '3');
 
-INSERT INTO productos (nombre, descripcion, existencias, precio)
+INSERT INTO productos (nombre, descripcion, existentes, precio)
 VALUES 
 ('Kimono de Gala para Gatos', 'Para que tu michi sea el más elegante del barrio.', 5, 45.00),
 ('Gorra "No molestar, programando"', 'Ideal para bibliotecas y salas de estudio.', 20, 15.95),
