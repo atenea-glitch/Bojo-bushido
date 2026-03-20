@@ -100,17 +100,18 @@ VALUES
 
 -- PEDIDO 1: Gizmo compra utiles para no mojarse 
 
-INSERT INTO pedidos (id_cliente, fecha) VALUES (2, GETDATE());
+INSERT INTO pedidos (id_cliente, fecha) VALUES (CURRENT_DATE);
 INSERT INTO detalles (id_pedido, id_producto, cantidad) 
 VALUES (1, 12, 1), (1, 8, 3), (1, 13, 1); -- Paraguas Neón, Calcetines Sushi y Almohada Onigiri
 
 -- PEDIDO 2: Asuka compra equipo de estudio y un regalo para su gato
 
-INSERT INTO pedidos (id_cliente, fecha) VALUES (3, GETDATE());
+INSERT INTO pedidos (id_cliente, fecha) VALUES (CURRENT_DATE);
 INSERT INTO detalles (id_pedido, id_producto, cantidad) 
 VALUES (2, 1, 1), (2, 10, 2), (2, 18, 1); -- Kimono Gato, Bolis Katana y Cuaderno Caligrafía
 
--- CONSULTA FINAL: Une las tablas para mostrar nombres, productos y cálculos
+-- CONSULTAS FINALES: Une las tablas para mostrar nombres, productos y cálculos, 
+-- incluyendo el total del pedido.
 SELECT 
     p.id_pedido, 
     c.nom AS Nombre_Cliente, 
@@ -121,3 +122,29 @@ FROM pedidos p
 JOIN clientes c ON p.id_cliente = c.id_cliente
 JOIN detalles d ON p.id_pedido = d.id_pedido
 JOIN productos prod ON d.id_producto = prod.id_producto;
+
+SELECT 
+    p.id_pedido,
+    c.nom,
+    SUM(d.cantidad * prod.precio) AS total_pedido
+FROM pedidos p
+JOIN clientes c ON p.id_cliente = c.id_cliente
+JOIN detalles d ON p.id_pedido = d.id_pedido
+JOIN productos prod ON d.id_producto = prod.id_producto
+GROUP BY p.id_pedido, c.nom;
+
+-- consulta un poco más compleja 
+-- ============================
+
+SELECT 
+    c.nom AS nombre_cliente,
+    SUM(d.cantidad * prod.precio) AS total_gastado,
+    COUNT(DISTINCT p.id_pedido) AS numero_pedidos
+FROM clientes c
+JOIN pedidos p ON c.id_cliente = p.id_cliente
+JOIN detalles d ON p.id_pedido = d.id_pedido
+JOIN productos prod ON d.id_producto = prod.id_producto
+WHERE p.fecha >= '2024-01-01'
+GROUP BY c.id_cliente, c.nom
+HAVING COUNT(DISTINCT p.id_pedido) > 2
+ORDER BY total_gastado DESC;
