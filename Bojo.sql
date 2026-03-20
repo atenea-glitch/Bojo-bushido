@@ -114,7 +114,7 @@ VALUES (2, 1, 1), (2, 10, 2), (2, 18, 1); -- Kimono Gato, Bolis Katana y Cuadern
 SELECT 
     p.id_pedido, 
     c.nom AS Nombre_Cliente, 
-    prod.nombre AS Producto, de 
+    prod.nombre AS Producto,
     d.cantidad, 
     (d.cantidad * prod.precio) AS Subtotal
 FROM pedidos p
