@@ -62,7 +62,8 @@ CREATE TABLE detalles (
 );
 
 -- =========================
--- INSERT CLIENTES
+-- añadimos algunos clientes para darle realismo al proyecto 
+-- y que no aparezcan tablas vacías
 -- =========================
 INSERT INTO clientes 
 (correo, pais, nom, primer_apellido, segundo_apellido, telefono, codigo_postal, provincia, pueblo, calle, numero, puerta)
@@ -92,30 +93,28 @@ VALUES
 ('Mini Ventilador USB para Nariz', 'Refresco directo para momentos de estrés.', 15, 10.50),
 ('Cuaderno de Caligrafía Pro', 'Papel de seda que absorbe la tinta mágicamente.', 25, 19.00),
 ('Reloj de Arena de 5 minutos', 'Para controlar tus descansos (o tus siestas).', 30, 11.00),
-('Set de Pegatinas de Gatitos Programadores', 'Decora tu portátil con estilo.', 200, 3.50);
-
--- =======
--- creamos varios pedidos para probar la funcionalidad de bbdd
--- =======
+('Set de Pegatinas de Gatitos Programadores', 'Decora tu portátil con estilo.', 200, 3.50); 
 
 -- PEDIDO 1: Gizmo compra utiles para no mojarse 
 
-INSERT INTO pedidos (id_cliente, fecha) VALUES (CURRENT_DATE);
+INSERT INTO pedidos (id_cliente, fecha) VALUES (2, CURRENT_DATE);
 INSERT INTO detalles (id_pedido, id_producto, cantidad) 
 VALUES (1, 12, 1), (1, 8, 3), (1, 13, 1); -- Paraguas Neón, Calcetines Sushi y Almohada Onigiri
 
 -- PEDIDO 2: Asuka compra equipo de estudio y un regalo para su gato
 
-INSERT INTO pedidos (id_cliente, fecha) VALUES (CURRENT_DATE);
+INSERT INTO pedidos (id_cliente, fecha) VALUES (3, CURRENT_DATE);
 INSERT INTO detalles (id_pedido, id_producto, cantidad) 
 VALUES (2, 1, 1), (2, 10, 2), (2, 18, 1); -- Kimono Gato, Bolis Katana y Cuaderno Caligrafía
 
--- CONSULTAS FINALES: Une las tablas para mostrar nombres, productos y cálculos, 
--- incluyendo el total del pedido.
+=====================
+-- CONSULTAS FINALES: Une las tablas para mostrar nombres,
+-- productos y cálculos, incluyendo el total del pedido.
+
 SELECT 
     p.id_pedido, 
     c.nom AS Nombre_Cliente, 
-    prod.nombre AS Producto, 
+    prod.nombre AS Producto, de 
     d.cantidad, 
     (d.cantidad * prod.precio) AS Subtotal
 FROM pedidos p
