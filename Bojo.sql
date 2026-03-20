@@ -71,61 +71,6 @@ VALUES
 ('gizmo.mogwai@rules.jp', 'Japón', 'Gizmo', 'Magwai', NULL, '+81 90-1111-2222', '150-0042', 'Tokyo', 'Shibuya', 'Dogenzaka', '302', '2'),
 ('asuka.eva02@nerv.jp', 'Japón', 'Asuka', 'Langley', NULL, '+81 80-5555-4444', '250-0601', 'Kanagawa', 'Hakone', 'Sengokuhara', '02', '3');
 
--- =========================
--- INSERT PRODUCTOS
--- =========================
-INSERT INTO productos (nombre, descripcion, existentes, precio)
-VALUES 
-('Kimono de Gala para Gatos', 'Para que tu michi sea el más elegante del barrio.', 5, 45.00),
-('Gorra "No molestar, programando"', 'Ideal para bibliotecas y salas de estudio.', 20, 15.95),
-('Zapatillas Ninja Silenciosas', 'Para llegar tarde a clase sin que el profesor te oiga.', 12, 55.50),
-('Palillos Eléctricos Anti-Deslave', 'Grip de alta tecnología para Ramen resbaladizo.', 30, 12.00),
-('Sudadera "Sobreviví al examen"', 'Edición limitada para valientes.', 40, 29.99),
-('Taza Térmica "Error 404: Café not found"', 'Mantiene el té caliente por 8 horas.', 25, 18.50),
-('Abanico Manual Anti-Calor Extremo', 'Estilo samurái para el verano de Tokyo.', 50, 8.00),
-('Calcetines de Sushi (Salmón)', 'Cuidado, no se comen.', 100, 6.50),
-('Libreta de Apuntes Invisibles', 'Ideal para espías o estudiantes que no estudian.', 15, 9.90),
-('Bolígrafo con forma de Katana', 'Escribe con el honor de un guerrero.', 60, 4.50);
-
--- =========================
--- PEDIDOS
--- =========================
-INSERT INTO pedidos (id_cliente) VALUES (2);
-INSERT INTO detalles (id_pedido, id_producto, cantidad) 
-VALUES (1, 8, 3);
-
-INSERT INTO pedidos (id_cliente) VALUES (3);
-INSERT INTO detalles (id_pedido, id_producto, cantidad) 
-VALUES (2, 1, 1);
-
--- =========================
--- CONSULTA FINAL
--- =========================
-SELECT 
-    p.id_pedido,
-    c.nom AS Nombre_Cliente,
-    prod.nombre AS Producto,
-    d.cantidad,
-    (d.cantidad * prod.precio) AS Subtotal
-FROM pedidos p
-JOIN clientes c ON p.id_cliente = c.id_cliente
-JOIN detalles d ON p.id_pedido = d.id_pedido
-JOIN productos prod ON d.id_producto = prod.id_producto;
-CREATE TABLE detalles (
-    id_detalle   INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    id_pedido    INT NOT NULL,
-    id_producto  INT NOT NULL,
-    cantidad     INTEGER NOT NULL CHECK (cantidad > 0),
-    FOREIGN KEY(id_pedido) REFERENCES pedidos(id_pedido),
-    FOREIGN KEY(id_producto) REFERENCES productos(id_producto)
-);
-
-INSERT INTO clientes (correo, pais, nom, apellido, telefono, codigo_postal, provincia, pueblo, calle, numero)
-VALUES 
-('hulk.aplasta@avengers.jp', 'EEUU', 'Hulk', 'Banner', '+1 202-555-0101', '10001', 'New York', 'Manhattan', 'Av. Vengadores', '7-A'),
-('gizmo.mogwai@rules.jp', 'Japón', 'Gizmo', 'Magwai', '+81 90-1111-2222', '150-0042', 'Tokyo', 'Shibuya', 'Dogenzaka', '302'),
-('asuka.eva02@nerv.jp', 'Japón', 'Asuka', 'Langley', '+81 80-5555-4444', '250-0601', 'Kanagawa', 'Hakone', 'Sengokuhara', '02');
-
 INSERT INTO productos (nombre, descripcion, existencias, precio)
 VALUES 
 ('Kimono de Gala para Gatos', 'Para que tu michi sea el más elegante del barrio.', 5, 45.00),
@@ -148,6 +93,10 @@ VALUES
 ('Cuaderno de Caligrafía Pro', 'Papel de seda que absorbe la tinta mágicamente.', 25, 19.00),
 ('Reloj de Arena de 5 minutos', 'Para controlar tus descansos (o tus siestas).', 30, 11.00),
 ('Set de Pegatinas de Gatitos Programadores', 'Decora tu portátil con estilo.', 200, 3.50);
+
+-- =======
+-- creamos varios pedidos para probar la funcionalidad de bbdd
+-- =======
 
 -- PEDIDO 1: Gizmo compra utiles para no mojarse 
 
