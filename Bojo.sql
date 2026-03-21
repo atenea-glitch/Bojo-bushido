@@ -40,7 +40,7 @@ CREATE TABLE productos (
 CREATE TABLE pedidos (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT NOT NULL,
-    fecha DATE NOT NULL DEFAULT NOW(),
+    fecha DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (id_cliente) 
         REFERENCES clientes(id_cliente)
         ON DELETE CASCADE
@@ -107,10 +107,10 @@ INSERT INTO pedidos (id_cliente, fecha) VALUES (3, NOW());
 INSERT INTO detalles (id_pedido, id_producto, cantidad) 
 VALUES (2, 1, 1), (2, 10, 2), (2, 18, 1); -- Kimono Gato, Bolis Katana y Cuaderno Caligrafía
 
-=====================
+-- =================================
 -- CONSULTAS FINALES: Une las tablas para mostrar nombres,
 -- productos y cálculos, incluyendo el total del pedido.
-
+-- ==================================
 SELECT 
     p.id_pedido, 
     c.nom AS Nombre_Cliente, 
