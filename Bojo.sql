@@ -107,6 +107,17 @@ INSERT INTO pedidos (id_cliente, fecha) VALUES (3, NOW());
 INSERT INTO detalles (id_pedido, id_producto, cantidad) 
 VALUES (2, 1, 1), (2, 10, 2), (2, 18, 1); -- Kimono Gato, Bolis Katana y Cuaderno Caligrafía
 
+-- Creamos 4 pedidos para Hulk 
+INSERT INTO pedidos (id_cliente, fecha) VALUES (1, NOW());
+INSERT INTO pedidos (id_cliente, fecha) VALUES (1, NOW());
+INSERT INTO pedidos (id_cliente, fecha) VALUES (1, NOW());
+INSERT INTO pedidos (id_cliente, fecha) VALUES (1, NOW());
+INSERT INTO detalles (id_pedido, id_producto, cantidad) 
+VALUES 
+(3, 1, 1),   -- Kimono
+(4, 2, 2),   -- Gorra
+(5, 3, 1),   -- Zapatillas
+(6, 12, 1);  -- Paraguas
 -- =================================
 -- CONSULTAS FINALES: Une las tablas para mostrar nombres,
 -- productos y cálculos, incluyendo el total del pedido.
