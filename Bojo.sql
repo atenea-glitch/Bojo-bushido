@@ -144,8 +144,6 @@ JOIN productos prod ON d.id_producto = prod.id_producto
 GROUP BY p.id_pedido, c.nom;
 
 -- consulta un poco más compleja 
--- ============================
-
 SELECT 
     c.nom AS nombre_cliente,
     SUM(d.cantidad * prod.precio) AS total_gastado,
@@ -158,3 +156,10 @@ WHERE p.fecha >= '2024-01-01'
 GROUP BY c.id_cliente, c.nom
 HAVING COUNT(DISTINCT p.id_pedido) > 2
 ORDER BY total_gastado DESC;
+-- =========================
+-- COMPROBACIÓN DE DATOS
+-- =========================
+SELECT * FROM clientes;
+SELECT * FROM productos;
+SELECT * FROM pedidos;
+SELECT * FROM detalles;
